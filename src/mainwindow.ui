@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>cangaroo</string>
+   <string>Canal</string>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -92,12 +92,20 @@
      <property name="title">
       <string>&amp;New</string>
      </property>
+	 <addaction name="actionAdcs_View"/>
+     <addaction name="actionEps_View"/>
+     <addaction name="actionRadio_View"/>
+     <addaction name="actionUvhf_View"/>
+     <addaction name="actionBeacon_View"/>
+     <addaction name="actionTransmit_View"/>
+	 <!--
      <addaction name="action_Trace_View"/>
      <addaction name="actionLog_View"/>
      <addaction name="actionGraph_View"/>
      <addaction name="actionCan_Status_View"/>
      <addaction name="actionGraph_View_2"/>
      <addaction name="actionTransmit_View"/>
+	 -->
     </widget>
     <addaction name="menu_New"/>
    </widget>
@@ -138,6 +146,34 @@
     <string>Alt+F4</string>
    </property>
   </action>
+  <action name="actionAdcs_View">
+   <property name="text">
+    <string>&amp;ADCS View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  
+  <action name="actionEps_View">
+   <property name="text">
+    <string>&amp;Eps View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
+   </property>
+  </action>
+  
+  <action name="actionRadio_View">
+   <property name="text">
+    <string>&amp;Radio View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
+   </property>
+  </action>
+  
+  <!--
   <action name="action_Trace_View">
    <property name="text">
     <string>&amp;Trace View</string>
@@ -146,6 +182,7 @@
     <string>Ctrl+Shift+T</string>
    </property>
   </action>
+  
   <action name="actionLog_View">
    <property name="text">
     <string>&amp;Log View</string>
@@ -154,6 +191,7 @@
     <string>Ctrl+Shift+L</string>
    </property>
   </action>
+  
   <action name="actionSetup">
    <property name="text">
     <string>&amp;Setup...</string>
@@ -162,6 +200,7 @@
     <string>Ctrl+Alt+S</string>
    </property>
   </action>
+  -->
   <action name="actionStart_Measurement">
    <property name="text">
     <string>Star&amp;t Measurement</string>
@@ -188,6 +227,7 @@
     <string>&amp;Save Trace to file...</string>
    </property>
   </action>
+  <!--
   <action name="actionGraph_View">
    <property name="enabled">
     <bool>false</bool>
@@ -234,6 +274,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
+  -->
   <action name="action_TraceClear">
    <property name="text">
     <string>&amp;Clear</string>
@@ -242,6 +283,8 @@
     <string>Esc</string>
    </property>
   </action>
+  
+  <!--
   <action name="actionCan_Status_View">
    <property name="text">
     <string>Can &amp;Status View</string>
@@ -252,6 +295,7 @@
     <string>Graph View</string>
    </property>
   </action>
+  -->
   <action name="actionTransmit_View">
    <property name="text">
     <string>Transmit View</string>

@@ -27,21 +27,14 @@ class Ui_MainWindow
 {
 public:
     QAction *action_Quit;
-    QAction *action_Trace_View;
-    QAction *actionLog_View;
-    QAction *actionSetup;
+    QAction *actionAdcs_View;
+    QAction *actionEps_View;
+    QAction *actionRadio_View;
     QAction *actionStart_Measurement;
     QAction *actionStop_Measurement;
     QAction *actionAbout;
     QAction *actionSave_Trace_to_file;
-    QAction *actionGraph_View;
-    QAction *action_WorkspaceNew;
-    QAction *action_WorkspaceSave;
-    QAction *action_WorkspaceSaveAs;
-    QAction *action_WorkspaceOpen;
     QAction *action_TraceClear;
-    QAction *actionCan_Status_View;
-    QAction *actionGraph_View_2;
     QAction *actionTransmit_View;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
@@ -63,12 +56,12 @@ public:
         MainWindow->setUnifiedTitleAndToolBarOnMac(true);
         action_Quit = new QAction(MainWindow);
         action_Quit->setObjectName(QStringLiteral("action_Quit"));
-        action_Trace_View = new QAction(MainWindow);
-        action_Trace_View->setObjectName(QStringLiteral("action_Trace_View"));
-        actionLog_View = new QAction(MainWindow);
-        actionLog_View->setObjectName(QStringLiteral("actionLog_View"));
-        actionSetup = new QAction(MainWindow);
-        actionSetup->setObjectName(QStringLiteral("actionSetup"));
+        actionAdcs_View = new QAction(MainWindow);
+        actionAdcs_View->setObjectName(QStringLiteral("actionAdcs_View"));
+        actionEps_View = new QAction(MainWindow);
+        actionEps_View->setObjectName(QStringLiteral("actionEps_View"));
+        actionRadio_View = new QAction(MainWindow);
+        actionRadio_View->setObjectName(QStringLiteral("actionRadio_View"));
         actionStart_Measurement = new QAction(MainWindow);
         actionStart_Measurement->setObjectName(QStringLiteral("actionStart_Measurement"));
         actionStop_Measurement = new QAction(MainWindow);
@@ -77,24 +70,8 @@ public:
         actionAbout->setObjectName(QStringLiteral("actionAbout"));
         actionSave_Trace_to_file = new QAction(MainWindow);
         actionSave_Trace_to_file->setObjectName(QStringLiteral("actionSave_Trace_to_file"));
-        actionGraph_View = new QAction(MainWindow);
-        actionGraph_View->setObjectName(QStringLiteral("actionGraph_View"));
-        actionGraph_View->setEnabled(false);
-        actionGraph_View->setVisible(false);
-        action_WorkspaceNew = new QAction(MainWindow);
-        action_WorkspaceNew->setObjectName(QStringLiteral("action_WorkspaceNew"));
-        action_WorkspaceSave = new QAction(MainWindow);
-        action_WorkspaceSave->setObjectName(QStringLiteral("action_WorkspaceSave"));
-        action_WorkspaceSaveAs = new QAction(MainWindow);
-        action_WorkspaceSaveAs->setObjectName(QStringLiteral("action_WorkspaceSaveAs"));
-        action_WorkspaceOpen = new QAction(MainWindow);
-        action_WorkspaceOpen->setObjectName(QStringLiteral("action_WorkspaceOpen"));
         action_TraceClear = new QAction(MainWindow);
         action_TraceClear->setObjectName(QStringLiteral("action_TraceClear"));
-        actionCan_Status_View = new QAction(MainWindow);
-        actionCan_Status_View->setObjectName(QStringLiteral("actionCan_Status_View"));
-        actionGraph_View_2 = new QAction(MainWindow);
-        actionGraph_View_2->setObjectName(QStringLiteral("actionGraph_View_2"));
         actionTransmit_View = new QAction(MainWindow);
         actionTransmit_View->setObjectName(QStringLiteral("actionTransmit_View"));
         centralwidget = new QWidget(MainWindow);
@@ -137,24 +114,17 @@ public:
         menubar->addAction(menu_Trace->menuAction());
         menubar->addAction(menuWindow->menuAction());
         menubar->addAction(menuHelp->menuAction());
-        menuFile->addAction(action_WorkspaceNew);
         menuFile->addSeparator();
-        menuFile->addAction(action_WorkspaceOpen);
-        menuFile->addAction(action_WorkspaceSave);
-        menuFile->addAction(action_WorkspaceSaveAs);
         menuFile->addSeparator();
         menuFile->addAction(action_Quit);
         menuWindow->addAction(menu_New->menuAction());
-        menu_New->addAction(action_Trace_View);
-        menu_New->addAction(actionLog_View);
-        menu_New->addAction(actionGraph_View);
-        menu_New->addAction(actionCan_Status_View);
-        menu_New->addAction(actionGraph_View_2);
+        menu_New->addAction(actionAdcs_View);
+        menu_New->addAction(actionEps_View);
+        menu_New->addAction(actionRadio_View);
         menu_New->addAction(actionTransmit_View);
         menuMeasurement->addAction(actionStart_Measurement);
         menuMeasurement->addAction(actionStop_Measurement);
         menuMeasurement->addSeparator();
-        menuMeasurement->addAction(actionSetup);
         menuHelp->addAction(actionAbout);
         menu_Trace->addAction(action_TraceClear);
         menu_Trace->addSeparator();
@@ -171,22 +141,22 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "cangaroo", Q_NULLPTR));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Canal", Q_NULLPTR));
         action_Quit->setText(QApplication::translate("MainWindow", "E&xit", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
         action_Quit->setShortcut(QApplication::translate("MainWindow", "Alt+F4", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT
-        action_Trace_View->setText(QApplication::translate("MainWindow", "&Trace View", Q_NULLPTR));
+        actionAdcs_View->setText(QApplication::translate("MainWindow", "&ADCS View", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
-        action_Trace_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+T", Q_NULLPTR));
+        actionAdcs_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+A", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT
-        actionLog_View->setText(QApplication::translate("MainWindow", "&Log View", Q_NULLPTR));
+        actionEps_View->setText(QApplication::translate("MainWindow", "&Log View", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
-        actionLog_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+L", Q_NULLPTR));
+        actionEps_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+E", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT
-        actionSetup->setText(QApplication::translate("MainWindow", "&Setup...", Q_NULLPTR));
+        actionRadio_View->setText(QApplication::translate("MainWindow", "&Radio View", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
-        actionSetup->setShortcut(QApplication::translate("MainWindow", "Ctrl+Alt+S", Q_NULLPTR));
+        actionRadio_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+R", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT
         actionStart_Measurement->setText(QApplication::translate("MainWindow", "Star&t Measurement", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
@@ -198,32 +168,10 @@ public:
 #endif // QT_NO_SHORTCUT
         actionAbout->setText(QApplication::translate("MainWindow", "&About", Q_NULLPTR));
         actionSave_Trace_to_file->setText(QApplication::translate("MainWindow", "&Save Trace to file...", Q_NULLPTR));
-        actionGraph_View->setText(QApplication::translate("MainWindow", "&Graph View", Q_NULLPTR));
-#ifndef QT_NO_SHORTCUT
-        actionGraph_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+G", Q_NULLPTR));
-#endif // QT_NO_SHORTCUT
-        action_WorkspaceNew->setText(QApplication::translate("MainWindow", "&New Workspace...", Q_NULLPTR));
-#ifndef QT_NO_SHORTCUT
-        action_WorkspaceNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", Q_NULLPTR));
-#endif // QT_NO_SHORTCUT
-        action_WorkspaceSave->setText(QApplication::translate("MainWindow", "&Save Workspace", Q_NULLPTR));
-#ifndef QT_NO_SHORTCUT
-        action_WorkspaceSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", Q_NULLPTR));
-#endif // QT_NO_SHORTCUT
-        action_WorkspaceSaveAs->setText(QApplication::translate("MainWindow", "Save Workspace &As...", Q_NULLPTR));
-#ifndef QT_NO_SHORTCUT
-        action_WorkspaceSaveAs->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", Q_NULLPTR));
-#endif // QT_NO_SHORTCUT
-        action_WorkspaceOpen->setText(QApplication::translate("MainWindow", "&Open Workspace...", Q_NULLPTR));
-#ifndef QT_NO_SHORTCUT
-        action_WorkspaceOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", Q_NULLPTR));
-#endif // QT_NO_SHORTCUT
         action_TraceClear->setText(QApplication::translate("MainWindow", "&Clear", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
         action_TraceClear->setShortcut(QApplication::translate("MainWindow", "Esc", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT
-        actionCan_Status_View->setText(QApplication::translate("MainWindow", "Can &Status View", Q_NULLPTR));
-        actionGraph_View_2->setText(QApplication::translate("MainWindow", "Graph View", Q_NULLPTR));
         actionTransmit_View->setText(QApplication::translate("MainWindow", "Transmit View", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindow", "&File", Q_NULLPTR));
         menuWindow->setTitle(QApplication::translate("MainWindow", "&Window", Q_NULLPTR));
