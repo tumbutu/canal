@@ -32,10 +32,11 @@
 //todo #include <core/CanTrace.h>
 //todo #include <window/TraceWindow/TraceWindow.h>
 //todo #include <window/SetupDialog/SetupDialog.h>
-//todo #include <window/LogWindow/LogWindow.h>
 //todo #include <window/GraphWindow/GraphWindow.h>
 //todo #include <window/CanStatusWindow/CanStatusWindow.h>
-//todo #include <window/RawTxWindow/RawTxWindow.h>
+
+#include <window/LogWindow/LogWindow.h>
+#include <window/RawTxWindow/RawTxWindow.h>
 
 //todo #include <driver/SLCANDriver/SLCANDriver.h>
 //todo #include <driver/CANBlastDriver/CANBlasterDriver.h>
@@ -55,10 +56,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QIcon icon(":/assets/cangaroo.png");
     setWindowIcon(icon);
+	
+	connect(ui->actionEps_View, SIGNAL(triggered()), this, SLOT(addLogWidget()));
 
 /*	todo
     connect(ui->action_Trace_View, SIGNAL(triggered()), this, SLOT(createTraceWindow()));
-    connect(ui->actionLog_View, SIGNAL(triggered()), this, SLOT(addLogWidget()));
     connect(ui->actionGraph_View, SIGNAL(triggered()), this, SLOT(createGraphWindow()));
     connect(ui->actionGraph_View_2, SIGNAL(triggered()), this, SLOT(addGraphWidget()));
     connect(ui->actionSetup, SIGNAL(triggered()), this, SLOT(showSetupDialog()));
@@ -128,12 +130,14 @@ QMainWindow *MainWindow::createTab(QString title)
     ui->mainTabs->addTab(mm, title);
     return mm;
 }
+*/
 
 QMainWindow *MainWindow::currentTab()
 {
     return (QMainWindow*)ui->mainTabs->currentWidget();
 }
 
+/* todo
 void MainWindow::stopAndClearMeasurement()
 {
     backend().stopMeasurement();
@@ -380,6 +384,7 @@ void MainWindow::addGraphWidget(QMainWindow *parent)
     dock->setWidget(new GraphWindow(dock, backend()));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
+*/
 
 void MainWindow::addRawTxWidget(QMainWindow *parent)
 {
@@ -387,7 +392,8 @@ void MainWindow::addRawTxWidget(QMainWindow *parent)
         parent = currentTab();
     }
     QDockWidget *dock = new QDockWidget("Transmit View", parent);
-    dock->setWidget(new RawTxWindow(dock, backend()));
+    //todo dock->setWidget(new RawTxWindow(dock, backend()));
+    //todo dock->setWidget(new RawTxWindow(dock));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
@@ -398,10 +404,12 @@ void MainWindow::addLogWidget(QMainWindow *parent)
         parent = currentTab();
     }
     QDockWidget *dock = new QDockWidget("Log", parent);
-    dock->setWidget(new LogWindow(dock, backend()));
+    //todo dock->setWidget(new LogWindow(dock, backend()));
+    //dock->setWidget(new LogWindow(dock));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
+/*
 void MainWindow::addStatusWidget(QMainWindow *parent)
 {
     if (!parent) {

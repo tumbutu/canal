@@ -58,8 +58,11 @@ public slots:
     QMainWindow *createTraceWindow(QString title=QString());
     QMainWindow *createGraphWindow(QString title=QString());
     void addGraphWidget(QMainWindow *parent=0);
+	*/
     void addRawTxWidget(QMainWindow *parent=0);
     void addLogWidget(QMainWindow *parent=0);
+	
+	/* todo
     void addStatusWidget(QMainWindow *parent=0);
 
     bool showSetupDialog();
@@ -93,7 +96,7 @@ private:
     //todo Backend &backend();
 
     //todo QMainWindow *createTab(QString title);
-    //todo QMainWindow *currentTab();
+    QMainWindow *currentTab();
 
     //todo void stopAndClearMeasurement();
 
