@@ -150,7 +150,7 @@ public:
 #ifndef QT_NO_SHORTCUT
         actionAdcs_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+A", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT
-        actionEps_View->setText(QApplication::translate("MainWindow", "&Log View", Q_NULLPTR));
+        actionEps_View->setText(QApplication::translate("MainWindow", "&Eps View", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
         actionEps_View->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+E", Q_NULLPTR));
 #endif // QT_NO_SHORTCUT

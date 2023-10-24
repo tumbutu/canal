@@ -400,7 +400,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/main.o main.cpp
 
 ../build/o/unix/mainwindow.o: mainwindow.cpp mainwindow.h \
-		../build/ui/ui_mainwindow.h
+		../build/ui/ui_mainwindow.h \
+		window/LogWindow/LogWindow.h \
+		window/RawTxWindow/RawTxWindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/mainwindow.o mainwindow.cpp
 
 ../build/o/unix/qrc_canal.o: ../build/rcc/qrc_canal.cpp 

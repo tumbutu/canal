@@ -34,9 +34,10 @@ RESOURCES = canal.qrc
 #include($$PWD/parser/dbc/dbc.pri)
 #include($$PWD/window/TraceWindow/TraceWindow.pri)
 #include($$PWD/window/SetupDialog/SetupDialog.pri)
-#include($$PWD/window/LogWindow/LogWindow.pri)
 #include($$PWD/window/GraphWindow/GraphWindow.pri)
 #include($$PWD/window/CanStatusWindow/CanStatusWindow.pri)
+
+#include($$PWD/window/LogWindow/LogWindow.pri)
 #include($$PWD/window/RawTxWindow/RawTxWindow.pri)
 
 
