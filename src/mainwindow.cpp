@@ -28,23 +28,23 @@
 #include <QCloseEvent>
 #include <QDomDocument>
 
-//todo #include <core/MeasurementSetup.h>
-//todo #include <core/CanTrace.h>
-//todo #include <window/TraceWindow/TraceWindow.h>
-//todo #include <window/SetupDialog/SetupDialog.h>
+#include <core/MeasurementSetup.h>
+#include <core/CanTrace.h>
+#include <window/TraceWindow/TraceWindow.h>
+#include <window/SetupDialog/SetupDialog.h>
 //todo #include <window/GraphWindow/GraphWindow.h>
-//todo #include <window/CanStatusWindow/CanStatusWindow.h>
+#include <window/CanStatusWindow/CanStatusWindow.h>
 
 #include <window/LogWindow/LogWindow.h>
 #include <window/RawTxWindow/RawTxWindow.h>
 
-//todo #include <driver/SLCANDriver/SLCANDriver.h>
-//todo #include <driver/CANBlastDriver/CANBlasterDriver.h>
+#include <driver/SLCANDriver/SLCANDriver.h>
+#include <driver/CANBlastDriver/CANBlasterDriver.h>
 
 #if defined(__linux__)
-//todo #include <driver/SocketCanDriver/SocketCanDriver.h>
+#include <driver/SocketCanDriver/SocketCanDriver.h>
 #else
-//todo #include <driver/CandleApiDriver/CandleApiDriver.h>
+#include <driver/CandleApiDriver/CandleApiDriver.h>
 #endif
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -57,17 +57,18 @@ MainWindow::MainWindow(QWidget *parent) :
     QIcon icon(":/assets/cangaroo.png");
     setWindowIcon(icon);
 	
+	connect(ui->actionAdcs_View, SIGNAL(triggered()), this, SLOT(createAdcsWindow()));
+	connect(ui->actionTransmit_View, SIGNAL(triggered()), this, SLOT(addRawTxWidget()));
 	connect(ui->actionEps_View, SIGNAL(triggered()), this, SLOT(addLogWidget()));
+	connect(ui->actionStart_Measurement, SIGNAL(triggered()), this, SLOT(startMeasurement()));
+    connect(ui->actionStop_Measurement, SIGNAL(triggered()), this, SLOT(stopMeasurement()));
 
 /*	todo
-    connect(ui->action_Trace_View, SIGNAL(triggered()), this, SLOT(createTraceWindow()));
+    
     connect(ui->actionGraph_View, SIGNAL(triggered()), this, SLOT(createGraphWindow()));
     connect(ui->actionGraph_View_2, SIGNAL(triggered()), this, SLOT(addGraphWidget()));
     connect(ui->actionSetup, SIGNAL(triggered()), this, SLOT(showSetupDialog()));
-    connect(ui->actionTransmit_View, SIGNAL(triggered()), this, SLOT(addRawTxWidget()));
-
-    connect(ui->actionStart_Measurement, SIGNAL(triggered()), this, SLOT(startMeasurement()));
-    connect(ui->actionStop_Measurement, SIGNAL(triggered()), this, SLOT(stopMeasurement()));
+    
 
     connect(&backend(), SIGNAL(beginMeasurement()), this, SLOT(updateMeasurementActions()));
     connect(&backend(), SIGNAL(endMeasurement()), this, SLOT(updateMeasurementActions()));
@@ -78,17 +79,17 @@ MainWindow::MainWindow(QWidget *parent) :
 */
 
 #if defined(__linux__)
-    //todo Backend::instance().addCanDriver(*(new SocketCanDriver(Backend::instance())));
+    Backend::instance().addCanDriver(*(new SocketCanDriver(Backend::instance())));
 #else
-    //todo Backend::instance().addCanDriver(*(new CandleApiDriver(Backend::instance())));
+    Backend::instance().addCanDriver(*(new CandleApiDriver(Backend::instance())));
 #endif
-    //todo Backend::instance().addCanDriver(*(new SLCANDriver(Backend::instance())));
-    //todo Backend::instance().addCanDriver(*(new CANBlasterDriver(Backend::instance())));
+    Backend::instance().addCanDriver(*(new SLCANDriver(Backend::instance())));
+    Backend::instance().addCanDriver(*(new CANBlasterDriver(Backend::instance())));
 
-    //todo setWorkspaceModified(false);
-    //todo newWorkspace();
+    setWorkspaceModified(false);
+    newWorkspace();
 
-    //todo _setupDlg = new SetupDialog(Backend::instance(), 0); // NOTE: must be called after drivers/plugins are initialized
+    _setupDlg = new SetupDialog(Backend::instance(), 0); // NOTE: must be called after drivers/plugins are initialized
 
 }
 
@@ -114,11 +115,12 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
-
+*/
 Backend &MainWindow::backend()
 {
     return Backend::instance();
 }
+
 
 QMainWindow *MainWindow::createTab(QString title)
 {
@@ -130,14 +132,14 @@ QMainWindow *MainWindow::createTab(QString title)
     ui->mainTabs->addTab(mm, title);
     return mm;
 }
-*/
+
 
 QMainWindow *MainWindow::currentTab()
 {
     return (QMainWindow*)ui->mainTabs->currentWidget();
 }
 
-/* todo
+
 void MainWindow::stopAndClearMeasurement()
 {
     backend().stopMeasurement();
@@ -152,7 +154,7 @@ void MainWindow::clearWorkspace()
     _workspaceFileName.clear();
     setWorkspaceModified(false);
 }
-
+/* todo
 bool MainWindow::loadWorkspaceTab(QDomElement el)
 {
     QMainWindow *mw = 0;
@@ -270,18 +272,22 @@ bool MainWindow::saveWorkspaceToFile(QString filename)
     }
 
 }
-
+*/
 void MainWindow::newWorkspace()
 {
-    if (askSaveBecauseWorkspaceModified() != QMessageBox::Cancel) {
-        stopAndClearMeasurement();
-        clearWorkspace();
-        createTraceWindow();
+    /*if (askSaveBecauseWorkspaceModified() != QMessageBox::Cancel) {
+        //todo stopAndClearMeasurement();
+        //todo clearWorkspace();
+        //todo createTraceWindow();
         addRawTxWidget();
-        backend().setDefaultSetup();
-    }
+        //todo backend().setDefaultSetup();
+    }*/
+	
+	createTraceWindow();
+	addRawTxWidget();
+	backend().setDefaultSetup();
 }
-
+/*
 void MainWindow::loadWorkspace()
 {
     if (askSaveBecauseWorkspaceModified() != QMessageBox::Cancel) {
@@ -310,7 +316,7 @@ bool MainWindow::saveWorkspaceAs()
         return false;
     }
 }
-
+*/
 void MainWindow::setWorkspaceModified(bool modified)
 {
     _workspaceModified = modified;
@@ -325,7 +331,7 @@ void MainWindow::setWorkspaceModified(bool modified)
     }
     setWindowTitle(title);
 }
-
+/*
 int MainWindow::askSaveBecauseWorkspaceModified()
 {
     if (_workspaceModified) {
@@ -349,7 +355,7 @@ int MainWindow::askSaveBecauseWorkspaceModified()
         return QMessageBox::Discard;
     }
 }
-
+*/
 QMainWindow *MainWindow::createTraceWindow(QString title)
 {
     if (title.isNull()) {
@@ -357,12 +363,28 @@ QMainWindow *MainWindow::createTraceWindow(QString title)
     }
     QMainWindow *mm = createTab(title);
     mm->setCentralWidget(new TraceWindow(mm, backend()));
+	addLogWidget(mm);
+	addRawTxWidget(mm);
+    
+    ui->mainTabs->setCurrentWidget(mm);
+    return mm;
+}
+
+QMainWindow *MainWindow::createAdcsWindow(QString title)
+{
+    if (title.isNull()) {
+        title = "ADCS";
+    }
+    QMainWindow *mm = createTab(title);
+    mm->setCentralWidget(new TraceWindow(mm, backend()));
     addLogWidget(mm);
+	
 
     ui->mainTabs->setCurrentWidget(mm);
     return mm;
 }
 
+/*
 QMainWindow *MainWindow::createGraphWindow(QString title)
 {
     if (title.isNull()) {
@@ -386,17 +408,27 @@ void MainWindow::addGraphWidget(QMainWindow *parent)
 }
 */
 
+void MainWindow::addAdcsWidget(QMainWindow *parent)
+{
+    if (!parent) {
+        parent = currentTab();
+    }
+	
+    QDockWidget *dock = new QDockWidget("ADCS View", parent);
+    dock->setWidget(new RawTxWindow(dock, backend()));
+    parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
+}
+
 void MainWindow::addRawTxWidget(QMainWindow *parent)
 {
     if (!parent) {
         parent = currentTab();
     }
+	
     QDockWidget *dock = new QDockWidget("Transmit View", parent);
-    //todo dock->setWidget(new RawTxWindow(dock, backend()));
-    //todo dock->setWidget(new RawTxWindow(dock));
+    dock->setWidget(new RawTxWindow(dock, backend()));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
-
 
 void MainWindow::addLogWidget(QMainWindow *parent)
 {
@@ -404,12 +436,10 @@ void MainWindow::addLogWidget(QMainWindow *parent)
         parent = currentTab();
     }
     QDockWidget *dock = new QDockWidget("Log", parent);
-    //todo dock->setWidget(new LogWindow(dock, backend()));
-    //dock->setWidget(new LogWindow(dock));
+    dock->setWidget(new LogWindow(dock, backend()));
     parent->addDockWidget(Qt::BottomDockWidgetArea, dock);
 }
 
-/*
 void MainWindow::addStatusWidget(QMainWindow *parent)
 {
     if (!parent) {
@@ -466,7 +496,7 @@ void MainWindow::stopMeasurement()
 {
     backend().stopMeasurement();
 }
-
+/*
 void MainWindow::saveTraceToFile()
 {
     QString filters("Vector ASC (*.asc);;Linux candump (*.candump))");

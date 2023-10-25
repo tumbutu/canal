@@ -23,7 +23,7 @@
 
 #include <QMainWindow>
 #include <QList>
-//todo #include <core/Backend.h>
+#include <core/Backend.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -54,15 +54,13 @@ protected:
     //todo void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
-	/* todo
+	
     QMainWindow *createTraceWindow(QString title=QString());
-    QMainWindow *createGraphWindow(QString title=QString());
-    void addGraphWidget(QMainWindow *parent=0);
-	*/
+    QMainWindow *createAdcsWindow(QString title=QString());
+    void addAdcsWidget(QMainWindow *parent=0);
     void addRawTxWidget(QMainWindow *parent=0);
     void addLogWidget(QMainWindow *parent=0);
 	
-	/* todo
     void addStatusWidget(QMainWindow *parent=0);
 
     bool showSetupDialog();
@@ -70,10 +68,15 @@ public slots:
 
     void startMeasurement();
     void stopMeasurement();
-    void saveTraceToFile();
+    
+	/* todo
+	void saveTraceToFile();
+	QMainWindow *createGraphWindow(QString title=QString());
+    void addGraphWidget(QMainWindow *parent=0);
 
     void updateMeasurementActions();
 	*/
+	
 private slots:
 	/* todo
     void on_action_WorkspaceNew_triggered();
@@ -81,9 +84,9 @@ private slots:
     void on_action_WorkspaceSave_triggered();
     void on_action_WorkspaceSaveAs_triggered();
     void on_action_TraceClear_triggered();
-
-    void on_actionCan_Status_View_triggered();
 	*/
+    void on_actionCan_Status_View_triggered();
+	
 	
 private:
     Ui::MainWindow *ui;
@@ -93,25 +96,25 @@ private:
     QString _workspaceFileName;
     QString _baseWindowTitle;
 
-    //todo Backend &backend();
+    Backend &backend();
 
-    //todo QMainWindow *createTab(QString title);
+    QMainWindow *createTab(QString title);
     QMainWindow *currentTab();
 
-    //todo void stopAndClearMeasurement();
-
-    //todo void clearWorkspace();
+    void stopAndClearMeasurement();
+	void clearWorkspace();
+	
     //todo bool loadWorkspaceTab(QDomElement el);
     //todo bool loadWorkspaceSetup(QDomElement el);
     //todo void loadWorkspaceFromFile(QString filename);
     //todo bool saveWorkspaceToFile(QString filename);
 
-    //todo void newWorkspace();
+    void newWorkspace();
     //todo void loadWorkspace();
     //todo bool saveWorkspace();
     //todo bool saveWorkspaceAs();
 
-    //todo void setWorkspaceModified(bool modified);
+    void setWorkspaceModified(bool modified);
     //todo int askSaveBecauseWorkspaceModified();
 
 };

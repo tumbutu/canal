@@ -21,9 +21,9 @@
 
 #pragma once
 
-//todo #include <core/Backend.h>
+#include <core/Backend.h>
 #include <core/ConfigurableWidget.h>
-//todo #include <core/MeasurementSetup.h>
+#include <core/MeasurementSetup.h>
 
 namespace Ui {
 class RawTxWindow;
@@ -37,25 +37,25 @@ class RawTxWindow : public ConfigurableWidget
     Q_OBJECT
 
 public:
-    explicit RawTxWindow(QWidget *parent/*, Backend &backend*/);
+    explicit RawTxWindow(QWidget *parent, Backend &backend);
     ~RawTxWindow();
 
     //todo virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
     //todo virtual bool loadXML(Backend &backend, QDomElement &el);
 
 private slots:
-    void changeDLC();
+    //todo void changeDLC();
     //todo void updateCapabilities();
-    void changeRepeatRate(int ms);
-    void sendRepeatMessage(bool enable);
-    void disableTxWindow(int disable);
+    //todo void changeRepeatRate(int ms);
+    //todo void sendRepeatMessage(bool enable);
+    //todo void disableTxWindow(int disable);
     //todo void refreshInterfaces();
     //todo void sendRawMessage();
 
 
 private:
     Ui::RawTxWindow *ui;
-    //todo Backend &_backend;
+    Backend &_backend;
     QTimer *repeatmsg_timer;
     void hideFDFields();
     void showFDFields();

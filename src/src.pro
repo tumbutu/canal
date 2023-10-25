@@ -4,7 +4,7 @@ QT += core gui
 QT += widgets
 QT += xml
 #QT += charts
-#QT += serialport
+QT += serialport
 
 TARGET = canal
 TEMPLATE = app
@@ -32,20 +32,20 @@ RESOURCES = canal.qrc
 include($$PWD/core/core.pri)
 include($$PWD/window/LogWindow/LogWindow.pri)
 include($$PWD/window/RawTxWindow/RawTxWindow.pri)
+include($$PWD/window/TraceWindow/TraceWindow.pri)
+include($$PWD/driver/driver.pri)
+include($$PWD/window/SetupDialog/SetupDialog.pri)
+include($$PWD/window/CanStatusWindow/CanStatusWindow.pri)
 
-#include($$PWD/driver/driver.pri)
 #include($$PWD/parser/dbc/dbc.pri)
-#include($$PWD/window/TraceWindow/TraceWindow.pri)
-#include($$PWD/window/SetupDialog/SetupDialog.pri)
 #include($$PWD/window/GraphWindow/GraphWindow.pri)
-#include($$PWD/window/CanStatusWindow/CanStatusWindow.pri)
 
 
 unix:PKGCONFIG += libnl-3.0
 unix:PKGCONFIG += libnl-route-3.0
-#unix:include($$PWD/driver/SocketCanDriver/SocketCanDriver.pri)
+unix:include($$PWD/driver/SocketCanDriver/SocketCanDriver.pri)
 
-#include($$PWD/driver/CANBlastDriver/CANBlastDriver.pri)
-#include($$PWD/driver/SLCANDriver/SLCANDriver.pri)
+include($$PWD/driver/CANBlastDriver/CANBlastDriver.pri)
+include($$PWD/driver/SLCANDriver/SLCANDriver.pri)
 
 #win32:include($$PWD/driver/CandleApiDriver/CandleApiDriver.pri)

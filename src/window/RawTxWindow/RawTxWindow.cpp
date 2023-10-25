@@ -24,21 +24,21 @@
 
 #include <QDomDocument>
 #include <QTimer>
-//todo #include <core/Backend.h>
-//todo #include <driver/CanInterface.h>
+#include <core/Backend.h>
+#include <driver/CanInterface.h>
 
 
-RawTxWindow::RawTxWindow(QWidget *parent/*, Backend &backend*/) :
+RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) :
     ConfigurableWidget(parent),
-    ui(new Ui::RawTxWindow)
-    //,_backend(backend)
+    ui(new Ui::RawTxWindow),
+    _backend(backend)
 {
     ui->setupUi(this);
 
-    connect(ui->singleSendButton, SIGNAL(released()), this, SLOT(sendRawMessage()));
-    connect(ui->repeatSendButton, SIGNAL(toggled(bool)), this, SLOT(sendRepeatMessage(bool)));
+    //todo connect(ui->singleSendButton, SIGNAL(released()), this, SLOT(sendRawMessage()));
+    //todo connect(ui->repeatSendButton, SIGNAL(toggled(bool)), this, SLOT(sendRepeatMessage(bool)));
 
-    connect(ui->spinBox_RepeatRate, SIGNAL(valueChanged(int)), this, SLOT(changeRepeatRate(int)));
+    //todo connect(ui->spinBox_RepeatRate, SIGNAL(valueChanged(int)), this, SLOT(changeRepeatRate(int)));
 
     //todo connect(ui->comboBoxInterface, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCapabilities()));
     //todo connect(ui->checkbox_FD, SIGNAL(stateChanged(int)), this, SLOT(updateCapabilities()));
@@ -46,13 +46,13 @@ RawTxWindow::RawTxWindow(QWidget *parent/*, Backend &backend*/) :
     //todo connect(&backend, SIGNAL(beginMeasurement()),  this, SLOT(refreshInterfaces()));
 
     // Timer for repeating messages
-    repeatmsg_timer = new QTimer(this);
-    connect(repeatmsg_timer, SIGNAL(timeout()), this, SLOT(sendRawMessage()));
+    //todo repeatmsg_timer = new QTimer(this);
+    //todo connect(repeatmsg_timer, SIGNAL(timeout()), this, SLOT(sendRawMessage()));
 
 
     // TODO: Grey out checkboxes that are invalid depending on DLC spinbox state
     //connect(ui->fieldDLC, SIGNAL(valueChanged(int)), this, SLOT(changeDLC(int)));
-    connect(ui->comboBoxDLC, SIGNAL(currentIndexChanged(int)), this, SLOT(changeDLC()));
+    //todo connect(ui->comboBoxDLC, SIGNAL(currentIndexChanged(int)), this, SLOT(changeDLC()));
 
     // Disable TX until interfaces are present
     this->setDisabled(1);
@@ -65,7 +65,7 @@ RawTxWindow::~RawTxWindow()
     delete ui;
 }
 
-
+/*todo
 void RawTxWindow::changeDLC()
 {
 
@@ -252,7 +252,7 @@ void RawTxWindow::changeDLC()
 //    repeatmsg_timer->setInterval(ms);
 }
 
-/*todo
+
 void RawTxWindow::updateCapabilities()
 {
 
@@ -352,7 +352,7 @@ void RawTxWindow::updateCapabilities()
         }
     }
 }
-*/
+
 
 void RawTxWindow::changeRepeatRate(int ms)
 {
@@ -370,10 +370,9 @@ void RawTxWindow::sendRepeatMessage(bool enable)
         repeatmsg_timer->stop();
     }
 }
+*/
 
-
-
-
+/*todo
 void RawTxWindow::disableTxWindow(int disable)
 {
     if(disable)
@@ -382,15 +381,16 @@ void RawTxWindow::disableTxWindow(int disable)
     }
     else
     {
-		/*todo
+		
         // Only enable if an interface is present
         if(_backend.getInterfaceList().count() > 0)
             this->setDisabled(0);
         else
             this->setDisabled(1);
-		*/
+
     }
 }
+*/
 
 /*todo
 void RawTxWindow::refreshInterfaces()
@@ -571,7 +571,7 @@ bool RawTxWindow::loadXML(Backend &backend, QDomElement &el)
     if (!ConfigurableWidget::loadXML(backend, el)) { return false; }
     return true;
 }
-*/
+
 
 void RawTxWindow::hideFDFields()
 {
@@ -742,4 +742,5 @@ void RawTxWindow::showFDFields()
     ui->fieldByte6_7->show();
     ui->fieldByte7_7->show();
 }
+*/
 

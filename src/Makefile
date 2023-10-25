@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_SERIALPORT_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -isystem /usr/include/libnl3 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I../build/ui -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+CXXFLAGS      = -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+INCPATH       = -I. -isystem /usr/include/libnl3 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtSerialPort -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I../build/ui -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = canal1.0.0
 DISTDIR = /media/sf_shared/POLSIS/STB_dev/canal/build/o/unix/canal1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) -lnl-route-3 -lnl-3 -lQt5Widgets -lQt5Gui -lQt5Xml -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lnl-route-3 -lnl-3 -lQt5Widgets -lQt5Gui -lQt5Xml -lQt5SerialPort -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -52,23 +52,119 @@ OBJECTS_DIR   = ../build/o/unix/
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
+		core/Backend.cpp \
+		core/CanMessage.cpp \
+		core/CanTrace.cpp \
+		core/CanDbMessage.cpp \
+		core/CanDb.cpp \
+		core/CanDbNode.cpp \
+		core/CanDbSignal.cpp \
+		core/MeasurementSetup.cpp \
+		core/MeasurementNetwork.cpp \
+		core/MeasurementInterface.cpp \
+		core/LogModel.cpp \
 		core/ConfigurableWidget.cpp \
+		core/Log.cpp \
 		window/LogWindow/LogWindow.cpp \
-		window/RawTxWindow/RawTxWindow.cpp ../build/rcc/qrc_canal.cpp \
+		window/RawTxWindow/RawTxWindow.cpp \
+		window/TraceWindow/TraceFilterModel.cpp \
+		window/TraceWindow/LinearTraceViewModel.cpp \
+		window/TraceWindow/AggregatedTraceViewModel.cpp \
+		window/TraceWindow/BaseTraceViewModel.cpp \
+		window/TraceWindow/AggregatedTraceViewItem.cpp \
+		window/TraceWindow/TraceWindow.cpp \
+		driver/CanInterface.cpp \
+		driver/CanListener.cpp \
+		driver/CanDriver.cpp \
+		driver/CanTiming.cpp \
+		driver/GenericCanSetupPage.cpp \
+		window/SetupDialog/SetupDialog.cpp \
+		window/SetupDialog/SetupDialogTreeModel.cpp \
+		window/SetupDialog/SetupDialogTreeItem.cpp \
+		window/SetupDialog/SelectCanInterfacesDialog.cpp \
+		window/CanStatusWindow/CanStatusWindow.cpp \
+		driver/SocketCanDriver/SocketCanInterface.cpp \
+		driver/SocketCanDriver/SocketCanDriver.cpp \
+		driver/CANBlastDriver/CANBlasterDriver.cpp \
+		driver/CANBlastDriver/CANBlasterInterface.cpp \
+		driver/SLCANDriver/SLCANInterface.cpp \
+		driver/SLCANDriver/SLCANDriver.cpp ../build/rcc/qrc_canal.cpp \
 		moc_mainwindow.cpp \
+		moc_Backend.cpp \
+		moc_CanTrace.cpp \
+		moc_MeasurementSetup.cpp \
+		moc_LogModel.cpp \
 		moc_ConfigurableWidget.cpp \
 		moc_LogWindow.cpp \
-		moc_RawTxWindow.cpp
+		moc_RawTxWindow.cpp \
+		moc_LinearTraceViewModel.cpp \
+		moc_AggregatedTraceViewModel.cpp \
+		moc_BaseTraceViewModel.cpp \
+		moc_TraceWindow.cpp \
+		moc_CanListener.cpp \
+		moc_GenericCanSetupPage.cpp \
+		moc_SetupDialog.cpp \
+		moc_SetupDialogTreeModel.cpp \
+		moc_SelectCanInterfacesDialog.cpp \
+		moc_CanStatusWindow.cpp
 OBJECTS       = ../build/o/unix/main.o \
 		../build/o/unix/mainwindow.o \
+		../build/o/unix/Backend.o \
+		../build/o/unix/CanMessage.o \
+		../build/o/unix/CanTrace.o \
+		../build/o/unix/CanDbMessage.o \
+		../build/o/unix/CanDb.o \
+		../build/o/unix/CanDbNode.o \
+		../build/o/unix/CanDbSignal.o \
+		../build/o/unix/MeasurementSetup.o \
+		../build/o/unix/MeasurementNetwork.o \
+		../build/o/unix/MeasurementInterface.o \
+		../build/o/unix/LogModel.o \
 		../build/o/unix/ConfigurableWidget.o \
+		../build/o/unix/Log.o \
 		../build/o/unix/LogWindow.o \
 		../build/o/unix/RawTxWindow.o \
+		../build/o/unix/TraceFilterModel.o \
+		../build/o/unix/LinearTraceViewModel.o \
+		../build/o/unix/AggregatedTraceViewModel.o \
+		../build/o/unix/BaseTraceViewModel.o \
+		../build/o/unix/AggregatedTraceViewItem.o \
+		../build/o/unix/TraceWindow.o \
+		../build/o/unix/CanInterface.o \
+		../build/o/unix/CanListener.o \
+		../build/o/unix/CanDriver.o \
+		../build/o/unix/CanTiming.o \
+		../build/o/unix/GenericCanSetupPage.o \
+		../build/o/unix/SetupDialog.o \
+		../build/o/unix/SetupDialogTreeModel.o \
+		../build/o/unix/SetupDialogTreeItem.o \
+		../build/o/unix/SelectCanInterfacesDialog.o \
+		../build/o/unix/CanStatusWindow.o \
+		../build/o/unix/SocketCanInterface.o \
+		../build/o/unix/SocketCanDriver.o \
+		../build/o/unix/CANBlasterDriver.o \
+		../build/o/unix/CANBlasterInterface.o \
+		../build/o/unix/SLCANInterface.o \
+		../build/o/unix/SLCANDriver.o \
 		../build/o/unix/qrc_canal.o \
 		../build/o/unix/moc_mainwindow.o \
+		../build/o/unix/moc_Backend.o \
+		../build/o/unix/moc_CanTrace.o \
+		../build/o/unix/moc_MeasurementSetup.o \
+		../build/o/unix/moc_LogModel.o \
 		../build/o/unix/moc_ConfigurableWidget.o \
 		../build/o/unix/moc_LogWindow.o \
-		../build/o/unix/moc_RawTxWindow.o
+		../build/o/unix/moc_RawTxWindow.o \
+		../build/o/unix/moc_LinearTraceViewModel.o \
+		../build/o/unix/moc_AggregatedTraceViewModel.o \
+		../build/o/unix/moc_BaseTraceViewModel.o \
+		../build/o/unix/moc_TraceWindow.o \
+		../build/o/unix/moc_CanListener.o \
+		../build/o/unix/moc_GenericCanSetupPage.o \
+		../build/o/unix/moc_SetupDialog.o \
+		../build/o/unix/moc_SetupDialogTreeModel.o \
+		../build/o/unix/moc_SelectCanInterfacesDialog.o \
+		../build/o/unix/moc_CanStatusWindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -132,6 +228,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		core/core.pri \
 		window/LogWindow/LogWindow.pri \
 		window/RawTxWindow/RawTxWindow.pri \
+		window/TraceWindow/TraceWindow.pri \
+		driver/driver.pri \
+		window/SetupDialog/SetupDialog.pri \
+		window/CanStatusWindow/CanStatusWindow.pri \
+		driver/SocketCanDriver/SocketCanDriver.pri \
+		driver/CANBlastDriver/CANBlastDriver.pri \
+		driver/SLCANDriver/SLCANDriver.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/link_pkgconfig.prf \
@@ -149,13 +252,83 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		src.pro mainwindow.h \
+		core/portable_endian.h \
+		core/Backend.h \
+		core/CanMessage.h \
+		core/CanTrace.h \
+		core/CanDbMessage.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbSignal.h \
+		core/MeasurementSetup.h \
+		core/MeasurementNetwork.h \
+		core/MeasurementInterface.h \
+		core/LogModel.h \
 		core/ConfigurableWidget.h \
+		core/Log.h \
 		window/LogWindow/LogWindow.h \
-		window/RawTxWindow/RawTxWindow.h main.cpp \
+		window/RawTxWindow/RawTxWindow.h \
+		window/TraceWindow/LinearTraceViewModel.h \
+		window/TraceWindow/AggregatedTraceViewModel.h \
+		window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/AggregatedTraceViewItem.h \
+		window/TraceWindow/TraceFilterModel.h \
+		window/TraceWindow/TraceWindow.h \
+		window/TraceWindow/TraceViewTypes.h \
+		driver/CanInterface.h \
+		driver/CanListener.h \
+		driver/CanDriver.h \
+		driver/CanTiming.h \
+		driver/GenericCanSetupPage.h \
+		window/SetupDialog/SetupDialog.h \
+		window/SetupDialog/SetupDialogTreeModel.h \
+		window/SetupDialog/SetupDialogTreeItem.h \
+		window/SetupDialog/SelectCanInterfacesDialog.h \
+		window/CanStatusWindow/CanStatusWindow.h \
+		driver/SocketCanDriver/SocketCanInterface.h \
+		driver/SocketCanDriver/SocketCanDriver.h \
+		driver/CANBlastDriver/CANBlasterDriver.h \
+		driver/CANBlastDriver/CANBlasterInterface.h \
+		driver/SLCANDriver/SLCANInterface.h \
+		driver/SLCANDriver/SLCANDriver.h main.cpp \
 		mainwindow.cpp \
+		core/Backend.cpp \
+		core/CanMessage.cpp \
+		core/CanTrace.cpp \
+		core/CanDbMessage.cpp \
+		core/CanDb.cpp \
+		core/CanDbNode.cpp \
+		core/CanDbSignal.cpp \
+		core/MeasurementSetup.cpp \
+		core/MeasurementNetwork.cpp \
+		core/MeasurementInterface.cpp \
+		core/LogModel.cpp \
 		core/ConfigurableWidget.cpp \
+		core/Log.cpp \
 		window/LogWindow/LogWindow.cpp \
-		window/RawTxWindow/RawTxWindow.cpp
+		window/RawTxWindow/RawTxWindow.cpp \
+		window/TraceWindow/TraceFilterModel.cpp \
+		window/TraceWindow/LinearTraceViewModel.cpp \
+		window/TraceWindow/AggregatedTraceViewModel.cpp \
+		window/TraceWindow/BaseTraceViewModel.cpp \
+		window/TraceWindow/AggregatedTraceViewItem.cpp \
+		window/TraceWindow/TraceWindow.cpp \
+		driver/CanInterface.cpp \
+		driver/CanListener.cpp \
+		driver/CanDriver.cpp \
+		driver/CanTiming.cpp \
+		driver/GenericCanSetupPage.cpp \
+		window/SetupDialog/SetupDialog.cpp \
+		window/SetupDialog/SetupDialogTreeModel.cpp \
+		window/SetupDialog/SetupDialogTreeItem.cpp \
+		window/SetupDialog/SelectCanInterfacesDialog.cpp \
+		window/CanStatusWindow/CanStatusWindow.cpp \
+		driver/SocketCanDriver/SocketCanInterface.cpp \
+		driver/SocketCanDriver/SocketCanDriver.cpp \
+		driver/CANBlastDriver/CANBlasterDriver.cpp \
+		driver/CANBlastDriver/CANBlasterInterface.cpp \
+		driver/SLCANDriver/SLCANInterface.cpp \
+		driver/SLCANDriver/SLCANDriver.cpp
 QMAKE_TARGET  = canal
 DESTDIR       = ../bin/
 TARGET        = ../bin/canal
@@ -164,7 +337,7 @@ TARGET        = ../bin/canal
 first: all
 ####### Build rules
 
-$(TARGET): ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h $(OBJECTS)  
+$(TARGET): ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h ../build/ui/ui_TraceWindow.h ../build/ui/ui_GenericCanSetupPage.h ../build/ui/ui_SetupDialog.h ../build/ui/ui_SelectCanInterfacesDialog.h ../build/ui/ui_CanStatusWindow.h $(OBJECTS)  
 	@test -d ../bin/ || mkdir -p ../bin/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -231,6 +404,13 @@ Makefile: src.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /us
 		core/core.pri \
 		window/LogWindow/LogWindow.pri \
 		window/RawTxWindow/RawTxWindow.pri \
+		window/TraceWindow/TraceWindow.pri \
+		driver/driver.pri \
+		window/SetupDialog/SetupDialog.pri \
+		window/CanStatusWindow/CanStatusWindow.pri \
+		driver/SocketCanDriver/SocketCanDriver.pri \
+		driver/CANBlastDriver/CANBlastDriver.pri \
+		driver/SLCANDriver/SLCANDriver.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/link_pkgconfig.prf \
@@ -252,6 +432,8 @@ Makefile: src.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /us
 		/usr/lib/x86_64-linux-gnu/libQt5Widgets.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Gui.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Xml.prl \
+		/usr/lib/x86_64-linux-gnu/libQt5SerialPort.prl \
+		/usr/lib/x86_64-linux-gnu/libQt5Network.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Core.prl
 	$(QMAKE) -o Makefile src.pro
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
@@ -317,6 +499,13 @@ Makefile: src.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /us
 core/core.pri:
 window/LogWindow/LogWindow.pri:
 window/RawTxWindow/RawTxWindow.pri:
+window/TraceWindow/TraceWindow.pri:
+driver/driver.pri:
+window/SetupDialog/SetupDialog.pri:
+window/CanStatusWindow/CanStatusWindow.pri:
+driver/SocketCanDriver/SocketCanDriver.pri:
+driver/CANBlastDriver/CANBlastDriver.pri:
+driver/SLCANDriver/SLCANDriver.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/link_pkgconfig.prf:
@@ -338,6 +527,8 @@ canal.qrc:
 /usr/lib/x86_64-linux-gnu/libQt5Widgets.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Gui.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Xml.prl:
+/usr/lib/x86_64-linux-gnu/libQt5SerialPort.prl:
+/usr/lib/x86_64-linux-gnu/libQt5Network.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile src.pro
@@ -355,9 +546,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents canal.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h core/ConfigurableWidget.h window/LogWindow/LogWindow.h window/RawTxWindow/RawTxWindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp core/ConfigurableWidget.cpp window/LogWindow/LogWindow.cpp window/RawTxWindow/RawTxWindow.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.ui window/LogWindow/LogWindow.ui window/RawTxWindow/RawTxWindow.ui $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h core/portable_endian.h core/Backend.h core/CanMessage.h core/CanTrace.h core/CanDbMessage.h core/CanDb.h core/CanDbNode.h core/CanDbSignal.h core/MeasurementSetup.h core/MeasurementNetwork.h core/MeasurementInterface.h core/LogModel.h core/ConfigurableWidget.h core/Log.h window/LogWindow/LogWindow.h window/RawTxWindow/RawTxWindow.h window/TraceWindow/LinearTraceViewModel.h window/TraceWindow/AggregatedTraceViewModel.h window/TraceWindow/BaseTraceViewModel.h window/TraceWindow/AggregatedTraceViewItem.h window/TraceWindow/TraceFilterModel.h window/TraceWindow/TraceWindow.h window/TraceWindow/TraceViewTypes.h driver/CanInterface.h driver/CanListener.h driver/CanDriver.h driver/CanTiming.h driver/GenericCanSetupPage.h window/SetupDialog/SetupDialog.h window/SetupDialog/SetupDialogTreeModel.h window/SetupDialog/SetupDialogTreeItem.h window/SetupDialog/SelectCanInterfacesDialog.h window/CanStatusWindow/CanStatusWindow.h driver/SocketCanDriver/SocketCanInterface.h driver/SocketCanDriver/SocketCanDriver.h driver/CANBlastDriver/CANBlasterDriver.h driver/CANBlastDriver/CANBlasterInterface.h driver/SLCANDriver/SLCANInterface.h driver/SLCANDriver/SLCANDriver.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp core/Backend.cpp core/CanMessage.cpp core/CanTrace.cpp core/CanDbMessage.cpp core/CanDb.cpp core/CanDbNode.cpp core/CanDbSignal.cpp core/MeasurementSetup.cpp core/MeasurementNetwork.cpp core/MeasurementInterface.cpp core/LogModel.cpp core/ConfigurableWidget.cpp core/Log.cpp window/LogWindow/LogWindow.cpp window/RawTxWindow/RawTxWindow.cpp window/TraceWindow/TraceFilterModel.cpp window/TraceWindow/LinearTraceViewModel.cpp window/TraceWindow/AggregatedTraceViewModel.cpp window/TraceWindow/BaseTraceViewModel.cpp window/TraceWindow/AggregatedTraceViewItem.cpp window/TraceWindow/TraceWindow.cpp driver/CanInterface.cpp driver/CanListener.cpp driver/CanDriver.cpp driver/CanTiming.cpp driver/GenericCanSetupPage.cpp window/SetupDialog/SetupDialog.cpp window/SetupDialog/SetupDialogTreeModel.cpp window/SetupDialog/SetupDialogTreeItem.cpp window/SetupDialog/SelectCanInterfacesDialog.cpp window/CanStatusWindow/CanStatusWindow.cpp driver/SocketCanDriver/SocketCanInterface.cpp driver/SocketCanDriver/SocketCanDriver.cpp driver/CANBlastDriver/CANBlasterDriver.cpp driver/CANBlastDriver/CANBlasterInterface.cpp driver/SLCANDriver/SLCANInterface.cpp driver/SLCANDriver/SLCANDriver.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.ui window/LogWindow/LogWindow.ui window/RawTxWindow/RawTxWindow.ui window/TraceWindow/TraceWindow.ui driver/GenericCanSetupPage.ui window/SetupDialog/SetupDialog.ui window/SetupDialog/SelectCanInterfacesDialog.ui window/CanStatusWindow/CanStatusWindow.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -394,38 +585,195 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
+	g++ -pipe -O2 -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_ConfigurableWidget.cpp moc_LogWindow.cpp moc_RawTxWindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_Backend.cpp moc_CanTrace.cpp moc_MeasurementSetup.cpp moc_LogModel.cpp moc_ConfigurableWidget.cpp moc_LogWindow.cpp moc_RawTxWindow.cpp moc_LinearTraceViewModel.cpp moc_AggregatedTraceViewModel.cpp moc_BaseTraceViewModel.cpp moc_TraceWindow.cpp moc_CanListener.cpp moc_GenericCanSetupPage.cpp moc_SetupDialog.cpp moc_SetupDialogTreeModel.cpp moc_SelectCanInterfacesDialog.cpp moc_CanStatusWindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_ConfigurableWidget.cpp moc_LogWindow.cpp moc_RawTxWindow.cpp
-moc_mainwindow.cpp: mainwindow.h \
+	-$(DEL_FILE) moc_mainwindow.cpp moc_Backend.cpp moc_CanTrace.cpp moc_MeasurementSetup.cpp moc_LogModel.cpp moc_ConfigurableWidget.cpp moc_LogWindow.cpp moc_RawTxWindow.cpp moc_LinearTraceViewModel.cpp moc_AggregatedTraceViewModel.cpp moc_BaseTraceViewModel.cpp moc_TraceWindow.cpp moc_CanListener.cpp moc_GenericCanSetupPage.cpp moc_SetupDialog.cpp moc_SetupDialogTreeModel.cpp moc_SelectCanInterfacesDialog.cpp moc_CanStatusWindow.cpp
+moc_mainwindow.cpp: core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+
+moc_Backend.cpp: driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/Backend.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/Backend.h -o moc_Backend.cpp
+
+moc_CanTrace.cpp: core/CanMessage.h \
+		driver/CanDriver.h \
+		core/CanTrace.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/CanTrace.h -o moc_CanTrace.cpp
+
+moc_MeasurementSetup.cpp: core/MeasurementSetup.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/MeasurementSetup.h -o moc_MeasurementSetup.cpp
+
+moc_LogModel.cpp: core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/LogModel.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/LogModel.h -o moc_LogModel.cpp
 
 moc_ConfigurableWidget.cpp: core/ConfigurableWidget.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/ConfigurableWidget.h -o moc_ConfigurableWidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/ConfigurableWidget.h -o moc_ConfigurableWidget.cpp
 
 moc_LogWindow.cpp: core/ConfigurableWidget.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
 		window/LogWindow/LogWindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/LogWindow/LogWindow.h -o moc_LogWindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/LogWindow/LogWindow.h -o moc_LogWindow.cpp
 
-moc_RawTxWindow.cpp: core/ConfigurableWidget.h \
+moc_RawTxWindow.cpp: core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/ConfigurableWidget.h \
 		window/RawTxWindow/RawTxWindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/RawTxWindow/RawTxWindow.h -o moc_RawTxWindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/RawTxWindow/RawTxWindow.h -o moc_RawTxWindow.cpp
+
+moc_LinearTraceViewModel.cpp: core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/CanTrace.h \
+		window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/TraceViewTypes.h \
+		window/TraceWindow/LinearTraceViewModel.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/TraceWindow/LinearTraceViewModel.h -o moc_LinearTraceViewModel.cpp
+
+moc_AggregatedTraceViewModel.cpp: window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/TraceViewTypes.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		window/TraceWindow/AggregatedTraceViewItem.h \
+		window/TraceWindow/AggregatedTraceViewModel.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/TraceWindow/AggregatedTraceViewModel.h -o moc_AggregatedTraceViewModel.cpp
+
+moc_BaseTraceViewModel.cpp: window/TraceWindow/TraceViewTypes.h \
+		window/TraceWindow/BaseTraceViewModel.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/TraceWindow/BaseTraceViewModel.h -o moc_BaseTraceViewModel.cpp
+
+moc_TraceWindow.cpp: core/ConfigurableWidget.h \
+		window/TraceWindow/TraceViewTypes.h \
+		window/TraceWindow/TraceFilterModel.h \
+		window/TraceWindow/TraceWindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/TraceWindow/TraceWindow.h -o moc_TraceWindow.cpp
+
+moc_CanListener.cpp: driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		driver/CanListener.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include driver/CanListener.h -o moc_CanListener.cpp
+
+moc_GenericCanSetupPage.cpp: driver/GenericCanSetupPage.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include driver/GenericCanSetupPage.h -o moc_GenericCanSetupPage.cpp
+
+moc_SetupDialog.cpp: window/SetupDialog/SetupDialog.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/SetupDialog/SetupDialog.h -o moc_SetupDialog.cpp
+
+moc_SetupDialogTreeModel.cpp: window/SetupDialog/SetupDialogTreeItem.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/MeasurementNetwork.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		window/SetupDialog/SetupDialogTreeModel.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/SetupDialog/SetupDialogTreeModel.h -o moc_SetupDialogTreeModel.cpp
+
+moc_SelectCanInterfacesDialog.cpp: driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		window/SetupDialog/SelectCanInterfacesDialog.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/SetupDialog/SelectCanInterfacesDialog.h -o moc_SelectCanInterfacesDialog.cpp
+
+moc_CanStatusWindow.cpp: core/ConfigurableWidget.h \
+		window/CanStatusWindow/CanStatusWindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtSerialPort -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/CanStatusWindow/CanStatusWindow.h -o moc_CanStatusWindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h
+compiler_uic_make_all: ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h ../build/ui/ui_TraceWindow.h ../build/ui/ui_GenericCanSetupPage.h ../build/ui/ui_SetupDialog.h ../build/ui/ui_SelectCanInterfacesDialog.h ../build/ui/ui_CanStatusWindow.h
 compiler_uic_clean:
-	-$(DEL_FILE) ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h
+	-$(DEL_FILE) ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h ../build/ui/ui_TraceWindow.h ../build/ui/ui_GenericCanSetupPage.h ../build/ui/ui_SetupDialog.h ../build/ui/ui_SelectCanInterfacesDialog.h ../build/ui/ui_CanStatusWindow.h
 ../build/ui/ui_mainwindow.h: mainwindow.ui \
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic mainwindow.ui -o ../build/ui/ui_mainwindow.h
@@ -438,6 +786,26 @@ compiler_uic_clean:
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic window/RawTxWindow/RawTxWindow.ui -o ../build/ui/ui_RawTxWindow.h
 
+../build/ui/ui_TraceWindow.h: window/TraceWindow/TraceWindow.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic window/TraceWindow/TraceWindow.ui -o ../build/ui/ui_TraceWindow.h
+
+../build/ui/ui_GenericCanSetupPage.h: driver/GenericCanSetupPage.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic driver/GenericCanSetupPage.ui -o ../build/ui/ui_GenericCanSetupPage.h
+
+../build/ui/ui_SetupDialog.h: window/SetupDialog/SetupDialog.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic window/SetupDialog/SetupDialog.ui -o ../build/ui/ui_SetupDialog.h
+
+../build/ui/ui_SelectCanInterfacesDialog.h: window/SetupDialog/SelectCanInterfacesDialog.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic window/SetupDialog/SelectCanInterfacesDialog.ui -o ../build/ui/ui_SelectCanInterfacesDialog.h
+
+../build/ui/ui_CanStatusWindow.h: window/CanStatusWindow/CanStatusWindow.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic window/CanStatusWindow/CanStatusWindow.ui -o ../build/ui/ui_CanStatusWindow.h
+
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
@@ -448,34 +816,547 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-../build/o/unix/main.o: main.cpp mainwindow.h
+../build/o/unix/main.o: main.cpp mainwindow.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/main.o main.cpp
 
 ../build/o/unix/mainwindow.o: mainwindow.cpp mainwindow.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
 		../build/ui/ui_mainwindow.h \
-		window/LogWindow/LogWindow.h \
+		core/CanTrace.h \
+		window/TraceWindow/TraceWindow.h \
 		core/ConfigurableWidget.h \
-		window/RawTxWindow/RawTxWindow.h
+		window/TraceWindow/TraceViewTypes.h \
+		window/TraceWindow/TraceFilterModel.h \
+		window/SetupDialog/SetupDialog.h \
+		window/CanStatusWindow/CanStatusWindow.h \
+		window/LogWindow/LogWindow.h \
+		window/RawTxWindow/RawTxWindow.h \
+		driver/SLCANDriver/SLCANDriver.h \
+		driver/CANBlastDriver/CANBlasterDriver.h \
+		driver/SocketCanDriver/SocketCanDriver.h \
+		driver/CandleApiDriver/CandleApiDriver.h \
+		driver/CandleApiDriver/api/candle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/mainwindow.o mainwindow.cpp
 
-../build/o/unix/ConfigurableWidget.o: core/ConfigurableWidget.cpp core/ConfigurableWidget.h
+../build/o/unix/Backend.o: core/Backend.cpp core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/LogModel.h \
+		core/CanTrace.h \
+		core/MeasurementNetwork.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		driver/CanListener.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/Backend.o core/Backend.cpp
+
+../build/o/unix/CanMessage.o: core/CanMessage.cpp core/CanMessage.h \
+		driver/CanDriver.h \
+		core/portable_endian.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanMessage.o core/CanMessage.cpp
+
+../build/o/unix/CanTrace.o: core/CanTrace.cpp core/CanTrace.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanTrace.o core/CanTrace.cpp
+
+../build/o/unix/CanDbMessage.o: core/CanDbMessage.cpp core/CanDbMessage.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		driver/CanDriver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanDbMessage.o core/CanDbMessage.cpp
+
+../build/o/unix/CanDb.o: core/CanDb.cpp core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/Backend.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanDb.o core/CanDb.cpp
+
+../build/o/unix/CanDbNode.o: core/CanDbNode.cpp core/CanDbNode.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanDbNode.o core/CanDbNode.cpp
+
+../build/o/unix/CanDbSignal.o: core/CanDbSignal.cpp core/CanDbSignal.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/CanDbMessage.h \
+		core/CanDb.h \
+		core/CanDbNode.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanDbSignal.o core/CanDbSignal.cpp
+
+../build/o/unix/MeasurementSetup.o: core/MeasurementSetup.cpp core/MeasurementSetup.h \
+		core/CanTrace.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/MeasurementNetwork.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/MeasurementSetup.o core/MeasurementSetup.cpp
+
+../build/o/unix/MeasurementNetwork.o: core/MeasurementNetwork.cpp core/MeasurementNetwork.h \
+		driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementInterface.h \
+		core/Backend.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/MeasurementNetwork.o core/MeasurementNetwork.cpp
+
+../build/o/unix/MeasurementInterface.o: core/MeasurementInterface.cpp core/MeasurementInterface.h \
+		driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/MeasurementInterface.o core/MeasurementInterface.cpp
+
+../build/o/unix/LogModel.o: core/LogModel.cpp core/LogModel.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/LogModel.o core/LogModel.cpp
+
+../build/o/unix/ConfigurableWidget.o: core/ConfigurableWidget.cpp core/ConfigurableWidget.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/ConfigurableWidget.o core/ConfigurableWidget.cpp
+
+../build/o/unix/Log.o: core/Log.cpp core/Log.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/Log.o core/Log.cpp
 
 ../build/o/unix/LogWindow.o: window/LogWindow/LogWindow.cpp window/LogWindow/LogWindow.h \
 		core/ConfigurableWidget.h \
-		../build/ui/ui_LogWindow.h
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		../build/ui/ui_LogWindow.h \
+		core/LogModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/LogWindow.o window/LogWindow/LogWindow.cpp
 
 ../build/o/unix/RawTxWindow.o: window/RawTxWindow/RawTxWindow.cpp window/RawTxWindow/RawTxWindow.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
 		core/ConfigurableWidget.h \
-		../build/ui/ui_RawTxWindow.h
+		../build/ui/ui_RawTxWindow.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/RawTxWindow.o window/RawTxWindow/RawTxWindow.cpp
+
+../build/o/unix/TraceFilterModel.o: window/TraceWindow/TraceFilterModel.cpp window/TraceWindow/TraceFilterModel.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/TraceFilterModel.o window/TraceWindow/TraceFilterModel.cpp
+
+../build/o/unix/LinearTraceViewModel.o: window/TraceWindow/LinearTraceViewModel.cpp window/TraceWindow/LinearTraceViewModel.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/CanTrace.h \
+		window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/TraceViewTypes.h \
+		core/Backend.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/LinearTraceViewModel.o window/TraceWindow/LinearTraceViewModel.cpp
+
+../build/o/unix/AggregatedTraceViewModel.o: window/TraceWindow/AggregatedTraceViewModel.cpp window/TraceWindow/AggregatedTraceViewModel.h \
+		window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/TraceViewTypes.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		window/TraceWindow/AggregatedTraceViewItem.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/CanTrace.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/AggregatedTraceViewModel.o window/TraceWindow/AggregatedTraceViewModel.cpp
+
+../build/o/unix/BaseTraceViewModel.o: window/TraceWindow/BaseTraceViewModel.cpp window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/TraceViewTypes.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/CanTrace.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/BaseTraceViewModel.o window/TraceWindow/BaseTraceViewModel.cpp
+
+../build/o/unix/AggregatedTraceViewItem.o: window/TraceWindow/AggregatedTraceViewItem.cpp window/TraceWindow/AggregatedTraceViewItem.h \
+		core/CanMessage.h \
+		driver/CanDriver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/AggregatedTraceViewItem.o window/TraceWindow/AggregatedTraceViewItem.cpp
+
+../build/o/unix/TraceWindow.o: window/TraceWindow/TraceWindow.cpp window/TraceWindow/TraceWindow.h \
+		core/ConfigurableWidget.h \
+		window/TraceWindow/TraceViewTypes.h \
+		window/TraceWindow/TraceFilterModel.h \
+		../build/ui/ui_TraceWindow.h \
+		window/TraceWindow/LinearTraceViewModel.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		driver/CanDriver.h \
+		core/CanTrace.h \
+		window/TraceWindow/BaseTraceViewModel.h \
+		window/TraceWindow/AggregatedTraceViewModel.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		window/TraceWindow/AggregatedTraceViewItem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/TraceWindow.o window/TraceWindow/TraceWindow.cpp
+
+../build/o/unix/CanInterface.o: driver/CanInterface.cpp driver/CanInterface.h \
+		driver/CanDriver.h \
+		driver/CanTiming.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanInterface.o driver/CanInterface.cpp
+
+../build/o/unix/CanListener.o: driver/CanListener.cpp driver/CanListener.h \
+		driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/CanTrace.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanListener.o driver/CanListener.cpp
+
+../build/o/unix/CanDriver.o: driver/CanDriver.cpp driver/CanDriver.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanDriver.o driver/CanDriver.cpp
+
+../build/o/unix/CanTiming.o: driver/CanTiming.cpp driver/CanTiming.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanTiming.o driver/CanTiming.cpp
+
+../build/o/unix/GenericCanSetupPage.o: driver/GenericCanSetupPage.cpp driver/GenericCanSetupPage.h \
+		../build/ui/ui_GenericCanSetupPage.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		window/SetupDialog/SetupDialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/GenericCanSetupPage.o driver/GenericCanSetupPage.cpp
+
+../build/o/unix/SetupDialog.o: window/SetupDialog/SetupDialog.cpp window/SetupDialog/SetupDialog.h \
+		../build/ui/ui_SetupDialog.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		window/SetupDialog/SetupDialogTreeModel.h \
+		window/SetupDialog/SetupDialogTreeItem.h \
+		core/MeasurementNetwork.h \
+		core/MeasurementInterface.h \
+		window/SetupDialog/SelectCanInterfacesDialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SetupDialog.o window/SetupDialog/SetupDialog.cpp
+
+../build/o/unix/SetupDialogTreeModel.o: window/SetupDialog/SetupDialogTreeModel.cpp window/SetupDialog/SetupDialogTreeModel.h \
+		window/SetupDialog/SetupDialogTreeItem.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/MeasurementNetwork.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SetupDialogTreeModel.o window/SetupDialog/SetupDialogTreeModel.cpp
+
+../build/o/unix/SetupDialogTreeItem.o: window/SetupDialog/SetupDialogTreeItem.cpp window/SetupDialog/SetupDialogTreeItem.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/MeasurementNetwork.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		window/SetupDialog/SetupDialogTreeModel.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SetupDialogTreeItem.o window/SetupDialog/SetupDialogTreeItem.cpp
+
+../build/o/unix/SelectCanInterfacesDialog.o: window/SetupDialog/SelectCanInterfacesDialog.cpp window/SetupDialog/SelectCanInterfacesDialog.h \
+		driver/CanDriver.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		../build/ui/ui_SelectCanInterfacesDialog.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SelectCanInterfacesDialog.o window/SetupDialog/SelectCanInterfacesDialog.cpp
+
+../build/o/unix/CanStatusWindow.o: window/CanStatusWindow/CanStatusWindow.cpp window/CanStatusWindow/CanStatusWindow.h \
+		core/ConfigurableWidget.h \
+		../build/ui/ui_CanStatusWindow.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/MeasurementNetwork.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CanStatusWindow.o window/CanStatusWindow/CanStatusWindow.cpp
+
+../build/o/unix/SocketCanInterface.o: driver/SocketCanDriver/SocketCanInterface.cpp driver/SocketCanDriver/SocketCanInterface.h \
+		driver/CanInterface.h \
+		driver/CanDriver.h \
+		driver/CanTiming.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		core/MeasurementInterface.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SocketCanInterface.o driver/SocketCanDriver/SocketCanInterface.cpp
+
+../build/o/unix/SocketCanDriver.o: driver/SocketCanDriver/SocketCanDriver.cpp driver/SocketCanDriver/SocketCanDriver.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/SocketCanDriver/SocketCanInterface.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		driver/GenericCanSetupPage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SocketCanDriver.o driver/SocketCanDriver/SocketCanDriver.cpp
+
+../build/o/unix/CANBlasterDriver.o: driver/CANBlastDriver/CANBlasterDriver.cpp driver/CANBlastDriver/CANBlasterDriver.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/CANBlastDriver/CANBlasterInterface.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		driver/GenericCanSetupPage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CANBlasterDriver.o driver/CANBlastDriver/CANBlasterDriver.cpp
+
+../build/o/unix/CANBlasterInterface.o: driver/CANBlastDriver/CANBlasterInterface.cpp driver/CANBlastDriver/CANBlasterInterface.h \
+		driver/CanInterface.h \
+		driver/CanDriver.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/CANBlasterInterface.o driver/CANBlastDriver/CANBlasterInterface.cpp
+
+../build/o/unix/SLCANInterface.o: driver/SLCANDriver/SLCANInterface.cpp driver/SLCANDriver/SLCANInterface.h \
+		driver/CanInterface.h \
+		driver/CanDriver.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		core/Backend.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SLCANInterface.o driver/SLCANDriver/SLCANInterface.cpp
+
+../build/o/unix/SLCANDriver.o: driver/SLCANDriver/SLCANDriver.cpp driver/SLCANDriver/SLCANDriver.h \
+		core/Backend.h \
+		driver/CanDriver.h \
+		core/CanDb.h \
+		core/CanDbNode.h \
+		core/CanDbMessage.h \
+		core/CanDbSignal.h \
+		core/CanMessage.h \
+		core/MeasurementSetup.h \
+		core/Log.h \
+		driver/SLCANDriver/SLCANInterface.h \
+		driver/CanInterface.h \
+		driver/CanTiming.h \
+		core/MeasurementInterface.h \
+		driver/GenericCanSetupPage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/SLCANDriver.o driver/SLCANDriver/SLCANDriver.cpp
 
 ../build/o/unix/qrc_canal.o: ../build/rcc/qrc_canal.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/qrc_canal.o ../build/rcc/qrc_canal.cpp
 
 ../build/o/unix/moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_mainwindow.o moc_mainwindow.cpp
+
+../build/o/unix/moc_Backend.o: moc_Backend.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_Backend.o moc_Backend.cpp
+
+../build/o/unix/moc_CanTrace.o: moc_CanTrace.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_CanTrace.o moc_CanTrace.cpp
+
+../build/o/unix/moc_MeasurementSetup.o: moc_MeasurementSetup.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_MeasurementSetup.o moc_MeasurementSetup.cpp
+
+../build/o/unix/moc_LogModel.o: moc_LogModel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_LogModel.o moc_LogModel.cpp
 
 ../build/o/unix/moc_ConfigurableWidget.o: moc_ConfigurableWidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_ConfigurableWidget.o moc_ConfigurableWidget.cpp
@@ -485,6 +1366,36 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ../build/o/unix/moc_RawTxWindow.o: moc_RawTxWindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_RawTxWindow.o moc_RawTxWindow.cpp
+
+../build/o/unix/moc_LinearTraceViewModel.o: moc_LinearTraceViewModel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_LinearTraceViewModel.o moc_LinearTraceViewModel.cpp
+
+../build/o/unix/moc_AggregatedTraceViewModel.o: moc_AggregatedTraceViewModel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_AggregatedTraceViewModel.o moc_AggregatedTraceViewModel.cpp
+
+../build/o/unix/moc_BaseTraceViewModel.o: moc_BaseTraceViewModel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_BaseTraceViewModel.o moc_BaseTraceViewModel.cpp
+
+../build/o/unix/moc_TraceWindow.o: moc_TraceWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_TraceWindow.o moc_TraceWindow.cpp
+
+../build/o/unix/moc_CanListener.o: moc_CanListener.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_CanListener.o moc_CanListener.cpp
+
+../build/o/unix/moc_GenericCanSetupPage.o: moc_GenericCanSetupPage.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_GenericCanSetupPage.o moc_GenericCanSetupPage.cpp
+
+../build/o/unix/moc_SetupDialog.o: moc_SetupDialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_SetupDialog.o moc_SetupDialog.cpp
+
+../build/o/unix/moc_SetupDialogTreeModel.o: moc_SetupDialogTreeModel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_SetupDialogTreeModel.o moc_SetupDialogTreeModel.cpp
+
+../build/o/unix/moc_SelectCanInterfacesDialog.o: moc_SelectCanInterfacesDialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_SelectCanInterfacesDialog.o moc_SelectCanInterfacesDialog.cpp
+
+../build/o/unix/moc_CanStatusWindow.o: moc_CanStatusWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_CanStatusWindow.o moc_CanStatusWindow.cpp
 
 ####### Install
 

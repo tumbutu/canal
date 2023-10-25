@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_RawTxWindow_t {
-    QByteArrayData data[9];
-    char stringdata0[92];
+    QByteArrayData data[1];
+    char stringdata0[12];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -31,20 +31,10 @@ struct qt_meta_stringdata_RawTxWindow_t {
     )
 static const qt_meta_stringdata_RawTxWindow_t qt_meta_stringdata_RawTxWindow = {
     {
-QT_MOC_LITERAL(0, 0, 11), // "RawTxWindow"
-QT_MOC_LITERAL(1, 12, 9), // "changeDLC"
-QT_MOC_LITERAL(2, 22, 0), // ""
-QT_MOC_LITERAL(3, 23, 16), // "changeRepeatRate"
-QT_MOC_LITERAL(4, 40, 2), // "ms"
-QT_MOC_LITERAL(5, 43, 17), // "sendRepeatMessage"
-QT_MOC_LITERAL(6, 61, 6), // "enable"
-QT_MOC_LITERAL(7, 68, 15), // "disableTxWindow"
-QT_MOC_LITERAL(8, 84, 7) // "disable"
+QT_MOC_LITERAL(0, 0, 11) // "RawTxWindow"
 
     },
-    "RawTxWindow\0changeDLC\0\0changeRepeatRate\0"
-    "ms\0sendRepeatMessage\0enable\0disableTxWindow\0"
-    "disable"
+    "RawTxWindow"
 };
 #undef QT_MOC_LITERAL
 
@@ -54,41 +44,22 @@ static const uint qt_meta_data_RawTxWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       0,    0, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
- // slots: name, argc, parameters, tag, flags
-       1,    0,   34,    2, 0x08 /* Private */,
-       3,    1,   35,    2, 0x08 /* Private */,
-       5,    1,   38,    2, 0x08 /* Private */,
-       7,    1,   41,    2, 0x08 /* Private */,
-
- // slots: parameters
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    4,
-    QMetaType::Void, QMetaType::Bool,    6,
-    QMetaType::Void, QMetaType::Int,    8,
-
        0        // eod
 };
 
 void RawTxWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        RawTxWindow *_t = static_cast<RawTxWindow *>(_o);
-        Q_UNUSED(_t)
-        switch (_id) {
-        case 0: _t->changeDLC(); break;
-        case 1: _t->changeRepeatRate((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 2: _t->sendRepeatMessage((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 3: _t->disableTxWindow((*reinterpret_cast< int(*)>(_a[1]))); break;
-        default: ;
-        }
-    }
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
 }
 
 const QMetaObject RawTxWindow::staticMetaObject = {
@@ -113,17 +84,6 @@ void *RawTxWindow::qt_metacast(const char *_clname)
 int RawTxWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = ConfigurableWidget::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 4;
-    }
     return _id;
 }
 QT_WARNING_POP

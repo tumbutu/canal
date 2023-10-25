@@ -22,7 +22,7 @@
 #pragma once
 
 #include <core/ConfigurableWidget.h>
-//todo #include <core/Backend.h>
+#include <core/Backend.h>
 
 namespace Ui {
 class LogWindow;
@@ -37,11 +37,11 @@ class LogWindow : public ConfigurableWidget
     Q_OBJECT
 
 public:
-    explicit LogWindow(QWidget *parent/*, Backend &backend*/);
+    explicit LogWindow(QWidget *parent, Backend &backend);
     ~LogWindow();
 
-    //todo virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
-    //todo virtual bool loadXML(Backend &backend, QDomElement &el);
+    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
+    virtual bool loadXML(Backend &backend, QDomElement &el);
 
 private slots:
     void rowsInserted(const QModelIndex & parent, int first, int last);

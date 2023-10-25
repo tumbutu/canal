@@ -23,17 +23,17 @@
 #include "ui_LogWindow.h"
 
 #include <QDomDocument>
-//todo #include <core/Backend.h>
-//todo #include <core/LogModel.h>
+#include <core/Backend.h>
+#include <core/LogModel.h>
 
-LogWindow::LogWindow(QWidget *parent/*, Backend &backend*/) :
+LogWindow::LogWindow(QWidget *parent, Backend &backend) :
     ConfigurableWidget(parent),
     ui(new Ui::LogWindow)
 {
-    //todo connect(&backend.getLogModel(), SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)));
+    connect(&backend.getLogModel(), SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)));
 
     ui->setupUi(this);
-    //todo ui->treeView->setModel(&backend.getLogModel());
+    ui->treeView->setModel(&backend.getLogModel());
 }
 
 LogWindow::~LogWindow()
@@ -41,7 +41,7 @@ LogWindow::~LogWindow()
     delete ui;
 }
 
-/*
+
 bool LogWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root)
 {
     if (!ConfigurableWidget::saveXML(backend, xml, root)) { return false; }
@@ -53,7 +53,7 @@ bool LogWindow::loadXML(Backend &backend, QDomElement &el)
 {
     return ConfigurableWidget::loadXML(backend, el);
 }
-*/
+
 
 void LogWindow::rowsInserted(const QModelIndex &parent, int first, int last)
 {
