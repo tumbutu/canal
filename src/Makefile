@@ -51,12 +51,24 @@ OBJECTS_DIR   = ../build/o/unix/
 ####### Files
 
 SOURCES       = main.cpp \
-		mainwindow.cpp ../build/rcc/qrc_canal.cpp \
-		moc_mainwindow.cpp
+		mainwindow.cpp \
+		core/ConfigurableWidget.cpp \
+		window/LogWindow/LogWindow.cpp \
+		window/RawTxWindow/RawTxWindow.cpp ../build/rcc/qrc_canal.cpp \
+		moc_mainwindow.cpp \
+		moc_ConfigurableWidget.cpp \
+		moc_LogWindow.cpp \
+		moc_RawTxWindow.cpp
 OBJECTS       = ../build/o/unix/main.o \
 		../build/o/unix/mainwindow.o \
+		../build/o/unix/ConfigurableWidget.o \
+		../build/o/unix/LogWindow.o \
+		../build/o/unix/RawTxWindow.o \
 		../build/o/unix/qrc_canal.o \
-		../build/o/unix/moc_mainwindow.o
+		../build/o/unix/moc_mainwindow.o \
+		../build/o/unix/moc_ConfigurableWidget.o \
+		../build/o/unix/moc_LogWindow.o \
+		../build/o/unix/moc_RawTxWindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -117,6 +129,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
+		core/core.pri \
+		window/LogWindow/LogWindow.pri \
+		window/RawTxWindow/RawTxWindow.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/link_pkgconfig.prf \
@@ -133,8 +148,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		src.pro mainwindow.h main.cpp \
-		mainwindow.cpp
+		src.pro mainwindow.h \
+		core/ConfigurableWidget.h \
+		window/LogWindow/LogWindow.h \
+		window/RawTxWindow/RawTxWindow.h main.cpp \
+		mainwindow.cpp \
+		core/ConfigurableWidget.cpp \
+		window/LogWindow/LogWindow.cpp \
+		window/RawTxWindow/RawTxWindow.cpp
 QMAKE_TARGET  = canal
 DESTDIR       = ../bin/
 TARGET        = ../bin/canal
@@ -143,7 +164,7 @@ TARGET        = ../bin/canal
 first: all
 ####### Build rules
 
-$(TARGET): ../build/ui/ui_mainwindow.h $(OBJECTS)  
+$(TARGET): ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h $(OBJECTS)  
 	@test -d ../bin/ || mkdir -p ../bin/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -207,6 +228,9 @@ Makefile: src.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /us
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
+		core/core.pri \
+		window/LogWindow/LogWindow.pri \
+		window/RawTxWindow/RawTxWindow.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/link_pkgconfig.prf \
@@ -290,6 +314,9 @@ Makefile: src.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /us
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
+core/core.pri:
+window/LogWindow/LogWindow.pri:
+window/RawTxWindow/RawTxWindow.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/link_pkgconfig.prf:
@@ -328,9 +355,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents canal.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h core/ConfigurableWidget.h window/LogWindow/LogWindow.h window/RawTxWindow/RawTxWindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp core/ConfigurableWidget.cpp window/LogWindow/LogWindow.cpp window/RawTxWindow/RawTxWindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.ui window/LogWindow/LogWindow.ui window/RawTxWindow/RawTxWindow.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -369,22 +396,47 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_ConfigurableWidget.cpp moc_LogWindow.cpp moc_RawTxWindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_ConfigurableWidget.cpp moc_LogWindow.cpp moc_RawTxWindow.cpp
 moc_mainwindow.cpp: mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
+moc_ConfigurableWidget.cpp: core/ConfigurableWidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include core/ConfigurableWidget.h -o moc_ConfigurableWidget.cpp
+
+moc_LogWindow.cpp: core/ConfigurableWidget.h \
+		window/LogWindow/LogWindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/LogWindow/LogWindow.h -o moc_LogWindow.cpp
+
+moc_RawTxWindow.cpp: core/ConfigurableWidget.h \
+		window/RawTxWindow/RawTxWindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/media/sf_shared/POLSIS/STB_dev/canal/src -I/usr/include/libnl3 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window/RawTxWindow/RawTxWindow.h -o moc_RawTxWindow.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ../build/ui/ui_mainwindow.h
+compiler_uic_make_all: ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h
 compiler_uic_clean:
-	-$(DEL_FILE) ../build/ui/ui_mainwindow.h
+	-$(DEL_FILE) ../build/ui/ui_mainwindow.h ../build/ui/ui_LogWindow.h ../build/ui/ui_RawTxWindow.h
 ../build/ui/ui_mainwindow.h: mainwindow.ui \
 		/usr/lib/qt5/bin/uic
 	/usr/lib/qt5/bin/uic mainwindow.ui -o ../build/ui/ui_mainwindow.h
+
+../build/ui/ui_LogWindow.h: window/LogWindow/LogWindow.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic window/LogWindow/LogWindow.ui -o ../build/ui/ui_LogWindow.h
+
+../build/ui/ui_RawTxWindow.h: window/RawTxWindow/RawTxWindow.ui \
+		/usr/lib/qt5/bin/uic
+	/usr/lib/qt5/bin/uic window/RawTxWindow/RawTxWindow.ui -o ../build/ui/ui_RawTxWindow.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -402,14 +454,37 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 ../build/o/unix/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../build/ui/ui_mainwindow.h \
 		window/LogWindow/LogWindow.h \
+		core/ConfigurableWidget.h \
 		window/RawTxWindow/RawTxWindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/mainwindow.o mainwindow.cpp
+
+../build/o/unix/ConfigurableWidget.o: core/ConfigurableWidget.cpp core/ConfigurableWidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/ConfigurableWidget.o core/ConfigurableWidget.cpp
+
+../build/o/unix/LogWindow.o: window/LogWindow/LogWindow.cpp window/LogWindow/LogWindow.h \
+		core/ConfigurableWidget.h \
+		../build/ui/ui_LogWindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/LogWindow.o window/LogWindow/LogWindow.cpp
+
+../build/o/unix/RawTxWindow.o: window/RawTxWindow/RawTxWindow.cpp window/RawTxWindow/RawTxWindow.h \
+		core/ConfigurableWidget.h \
+		../build/ui/ui_RawTxWindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/RawTxWindow.o window/RawTxWindow/RawTxWindow.cpp
 
 ../build/o/unix/qrc_canal.o: ../build/rcc/qrc_canal.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/qrc_canal.o ../build/rcc/qrc_canal.cpp
 
 ../build/o/unix/moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_mainwindow.o moc_mainwindow.cpp
+
+../build/o/unix/moc_ConfigurableWidget.o: moc_ConfigurableWidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_ConfigurableWidget.o moc_ConfigurableWidget.cpp
+
+../build/o/unix/moc_LogWindow.o: moc_LogWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_LogWindow.o moc_LogWindow.cpp
+
+../build/o/unix/moc_RawTxWindow.o: moc_RawTxWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/o/unix/moc_RawTxWindow.o moc_RawTxWindow.cpp
 
 ####### Install
 

@@ -21,31 +21,23 @@
 
 #pragma once
 
-#include <core/ConfigurableWidget.h>
-//todo #include <core/Backend.h>
+#include <QObject>
+#include <QWidget>
 
-namespace Ui {
-class LogWindow;
-}
-
+class Backend;
 class QDomDocument;
 class QDomElement;
-class LogModel;
 
-class LogWindow : public ConfigurableWidget
+class ConfigurableWidget : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit LogWindow(QWidget *parent/*, Backend &backend*/);
-    ~LogWindow();
+    explicit ConfigurableWidget(QWidget *parent = 0);
+    virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
+    virtual bool loadXML(Backend &backend, QDomElement &el);
 
-    //todo virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
-    //todo virtual bool loadXML(Backend &backend, QDomElement &el);
+signals:
+    void settingsChanged(ConfigurableWidget *sender);
 
-private slots:
-    void rowsInserted(const QModelIndex & parent, int first, int last);
-
-private:
-    Ui::LogWindow *ui;
+public slots:
 };

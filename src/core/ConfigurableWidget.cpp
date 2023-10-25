@@ -19,33 +19,26 @@
 
 */
 
-#pragma once
+#include "ConfigurableWidget.h"
+#include <QDomDocument>
+//#include <core/Backend.h>
 
-#include <core/ConfigurableWidget.h>
-//todo #include <core/Backend.h>
+ConfigurableWidget::ConfigurableWidget(QWidget *parent) : QWidget(parent)
+{
 
-namespace Ui {
-class LogWindow;
 }
 
-class QDomDocument;
-class QDomElement;
-class LogModel;
-
-class LogWindow : public ConfigurableWidget
+bool ConfigurableWidget::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root)
 {
-    Q_OBJECT
+    (void) backend;
+    (void) xml;
+    (void) root;
+    return true;
+}
 
-public:
-    explicit LogWindow(QWidget *parent/*, Backend &backend*/);
-    ~LogWindow();
-
-    //todo virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
-    //todo virtual bool loadXML(Backend &backend, QDomElement &el);
-
-private slots:
-    void rowsInserted(const QModelIndex & parent, int first, int last);
-
-private:
-    Ui::LogWindow *ui;
-};
+bool ConfigurableWidget::loadXML(Backend &backend, QDomElement &el)
+{
+    (void) backend;
+    (void) el;
+    return true;
+}

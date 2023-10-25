@@ -22,7 +22,7 @@
 #pragma once
 
 //todo #include <core/Backend.h>
-//#include <core/ConfigurableWidget.h>
+#include <core/ConfigurableWidget.h>
 //todo #include <core/MeasurementSetup.h>
 
 namespace Ui {
@@ -32,14 +32,12 @@ class RawTxWindow;
 class QDomDocument;
 class QDomElement;
 
-class RawTxWindow
-//todo class RawTxWindow : public ConfigurableWidget
+class RawTxWindow : public ConfigurableWidget
 {
     Q_OBJECT
 
 public:
-    //todo explicit RawTxWindow(QWidget *parent, Backend &backend);
-    explicit RawTxWindow(QWidget *parent);
+    explicit RawTxWindow(QWidget *parent/*, Backend &backend*/);
     ~RawTxWindow();
 
     //todo virtual bool saveXML(Backend &backend, QDomDocument &xml, QDomElement &root);
@@ -52,7 +50,7 @@ private slots:
     void sendRepeatMessage(bool enable);
     void disableTxWindow(int disable);
     //todo void refreshInterfaces();
-    void sendRawMessage();
+    //todo void sendRawMessage();
 
 
 private:

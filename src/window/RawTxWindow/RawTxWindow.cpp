@@ -27,14 +27,11 @@
 //todo #include <core/Backend.h>
 //todo #include <driver/CanInterface.h>
 
-/* todo
-RawTxWindow::RawTxWindow(QWidget *parent, Backend &backend) :
+
+RawTxWindow::RawTxWindow(QWidget *parent/*, Backend &backend*/) :
     ConfigurableWidget(parent),
-    ui(new Ui::RawTxWindow),
-    _backend(backend)
-*/
-RawTxWindow::RawTxWindow(QWidget *parent) :
     ui(new Ui::RawTxWindow)
+    //,_backend(backend)
 {
     ui->setupUi(this);
 
@@ -385,11 +382,13 @@ void RawTxWindow::disableTxWindow(int disable)
     }
     else
     {
+		/*todo
         // Only enable if an interface is present
         if(_backend.getInterfaceList().count() > 0)
             this->setDisabled(0);
         else
             this->setDisabled(1);
+		*/
     }
 }
 
@@ -421,6 +420,7 @@ void RawTxWindow::refreshInterfaces()
 }
 */
 
+/* todo
 void RawTxWindow::sendRawMessage()
 {
     CanMessage msg;
@@ -558,7 +558,7 @@ void RawTxWindow::sendRawMessage()
 
 }
 
-/* todo
+
 bool RawTxWindow::saveXML(Backend &backend, QDomDocument &xml, QDomElement &root)
 {
     if (!ConfigurableWidget::saveXML(backend, xml, root)) { return false; }

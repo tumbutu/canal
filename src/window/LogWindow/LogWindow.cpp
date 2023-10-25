@@ -26,21 +26,12 @@
 //todo #include <core/Backend.h>
 //todo #include <core/LogModel.h>
 
-/*
-LogWindow::LogWindow(QWidget *parent, Backend &backend) :
+LogWindow::LogWindow(QWidget *parent/*, Backend &backend*/) :
     ConfigurableWidget(parent),
     ui(new Ui::LogWindow)
 {
-    connect(&backend.getLogModel(), SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)));
+    //todo connect(&backend.getLogModel(), SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)));
 
-    ui->setupUi(this);
-    ui->treeView->setModel(&backend.getLogModel());
-}
-*/
-LogWindow::LogWindow(QWidget *parent) :
-    ConfigurableWidget(parent),
-    ui(new Ui::LogWindow)
-{
     ui->setupUi(this);
     //todo ui->treeView->setModel(&backend.getLogModel());
 }

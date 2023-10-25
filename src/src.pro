@@ -29,16 +29,16 @@ FORMS    += mainwindow.ui
 
 RESOURCES = canal.qrc
 
-#include($$PWD/core/core.pri)
+include($$PWD/core/core.pri)
+include($$PWD/window/LogWindow/LogWindow.pri)
+include($$PWD/window/RawTxWindow/RawTxWindow.pri)
+
 #include($$PWD/driver/driver.pri)
 #include($$PWD/parser/dbc/dbc.pri)
 #include($$PWD/window/TraceWindow/TraceWindow.pri)
 #include($$PWD/window/SetupDialog/SetupDialog.pri)
 #include($$PWD/window/GraphWindow/GraphWindow.pri)
 #include($$PWD/window/CanStatusWindow/CanStatusWindow.pri)
-
-#include($$PWD/window/LogWindow/LogWindow.pri)
-#include($$PWD/window/RawTxWindow/RawTxWindow.pri)
 
 
 unix:PKGCONFIG += libnl-3.0
